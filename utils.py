@@ -12,15 +12,16 @@ def get_A(sigma,h,r,x):
     A3 = r *np.eye(N)
     
     A2 = np.diag(x)
-    A2 +=np.diag(-x[1:],k=-1)
-    A2 *= -r/h
+    A2 +=np.diag(-x[1:],k=+1)
+    A2[N-1,N-1] -= (x[N-1]*(1+h)) 
+    A2 *= r/h
     
     x_square = np.power(x,2)
-    A1 = np.diag(-2*x_square)
-    A1 += np.diag(x_square[1:],k=-1)
-    A1 += np.diag(x_square[:N-1],k=1)
-    A1[N-1,N-1] += x_square[N-1]/(1-h)
-    A1 *= -(sigma**2)/(2*h**2)
+    A1 = np.diag(2*x_square)
+    A1 += np.diag(-x_square[1:],k=-1)
+    A1 += np.diag(-x_square[:N-1],k=1)
+    A1[N-1,N-1] -= x_square[N-1]*(1+h)
+    A1 *= (sigma**2)/(2*h**2)
     
     return A1+A2+A3
     
