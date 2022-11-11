@@ -34,7 +34,7 @@ def phi_tilde(x):
 
 def solu_exact(sigma,r,t,T,x):
     if (x==0):
-        return np.exp(-r*(T)) #If 1>2r/sigma**2
+        return np.exp(-r*(T-t)) #If 1>2r/sigma**2
     
     else:
         if (t==0):
@@ -45,14 +45,15 @@ def solu_exact(sigma,r,t,T,x):
             return a 
         
         else : 
+            
             d_1_tilde = (np.log(x) + (r + (sigma**2/2)*t))/(sigma*np.sqrt(t))
-            first_term = np.exp(r*t)*norm.cdf(-d_1_tilde+sigma*np.sqrt(t))
+            first_term = np.exp(-r*t)*norm.cdf(-d_1_tilde+sigma*np.sqrt(t))
             second_term = x*norm.cdf(-d_1_tilde)
             second_term = -second_term
-            third_term_1 = np.exp(r*t)*norm.cdf(d_1_tilde)
+            third_term_1 = np.exp(-r*t)*norm.cdf(d_1_tilde)
             third_term_2 = ((1/x)**(2*r/(sigma**2)))*norm.cdf(d_1_tilde-(2*r/sigma)*np.sqrt(t))
             third_term = third_term_1 + third_term_2
-            third_term *= x*np.exp(r*t)*((sigma**2)/(2*r))  
+            third_term *= x*np.exp(-r*t)*((sigma**2)/(2*r))  
             
             return first_term + second_term + third_term  
     
