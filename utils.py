@@ -60,12 +60,21 @@ def solu_exact_2(sigma,r,t,T,x):
         
         else : 
             
+<<<<<<< HEAD
             d_m_plus = (np.log(x) + (r + (sigma**2/2))*(T-t))/(sigma*np.sqrt(T-t))
             d_m_moin = (np.log(x) + (r - (sigma**2/2))*(T-t))/(sigma*np.sqrt(T-t))
             d_m_r = d_m_plus - 2*(r/sigma)*(T-t)
             first_term = np.exp(-r*(T-t))*norm.cdf(-d_m_moin)
             second_term = -x*norm.cdf(-d_m_plus)
             third_term_1 = np.exp(r*(T-t))*norm.cdf(d_m_plus)
+=======
+            d_m_plus = (np.log(x) + (r + (sigma**2/2))*t)/(sigma*np.sqrt(t))
+            d_m_moin = (np.log(x) + (r - (sigma**2/2))*t)/(sigma*np.sqrt(t))
+            d_m_r = d_m_plus - 2*(r/sigma)*t
+            first_term = np.exp(-r*t)*norm.cdf(-d_m_moin)
+            second_term = -x*norm.cdf(-d_m_plus)
+            third_term_1 = np.exp(r*t)*norm.cdf(d_m_plus)
+>>>>>>> 72714aae1c427f664f6fe1e02495f05741755b16
             third_term_2 = -((1/x)**(2*r/(sigma**2)))*norm.cdf(d_m_r)
             third_term = third_term_1 + third_term_2
             third_term *= x*np.exp(-r*(T-t))*((sigma**2)/(2*r))  
