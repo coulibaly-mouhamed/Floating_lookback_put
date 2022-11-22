@@ -7,7 +7,7 @@ if __name__ == '__main__':
     
     # Parametres principaux
     K = 1.0        # strike
-    T = 1.0        # echeance
+    T = 2.0        # echeance
     r = 1.0        # taux de l'actif sans risque
     sigma = 2.0    # volatilite du sous-jacent
     M = 2    #Stike
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     
     method = 'EI'
     #compute_solution(sigma,r,N,J,M,T,method)
-    study_error = True
+    study_error = False
     if (study_error):
         
         #Compute error for a fixed time step J=200
@@ -77,30 +77,33 @@ if __name__ == '__main__':
     test_stability = True
     if (test_stability):
         N_list = np.arange(10,100,10)
+        T=2
+        J = 100
         norm_inf=[]
         for N_ in N_list:
             h = 1/N_
             x = np.linspace(0,1,N_)
             A = get_A(sigma,h,r,x)
+            k= T/J
             if (method == 'EE'):
-                B = (np.eye(N) - k*A)
+                B = (np.eye(N_) - k*A)
                 #Calcul norme infinie de B
                 norm_inf_b = np.linalg.norm(B,np.inf)
                 norm_inf.append(norm_inf_b)
             elif (method == 'EI'):
-                B = (np.linalg.inv(np.eye(N) + k*A))
+                B = (np.linalg.inv(np.eye(N_) + k*A))
                 #Calcul norme infinie de B
                 norm_inf_b = np.linalg.norm(B,np.inf)
                 norm_inf.append(norm_inf_b)
             
             elif (method == 'CN'):
-                B = (np.linalg.inv(np.eye(N) + k*A/2).dot(np.eye(N) - k*A/2))
+                B = (np.linalg.inv(np.eye(N_) + k*A/2).dot(np.eye(N_) - k*A/2))
                 #Calcul norme infinie de B
                 norm_inf_b = np.linalg.norm(B,np.inf)
                 norm_inf.append(norm_inf_b)
         plt.figure()
-        plt.plot(N_list,norm_inf)
-        plt.xlabel("N")
+        plt.plot(1/N_list,norm_inf)
+        plt.xlabel("h")
         plt.ylabel("Norme infinie de B")
         plt.title("Norme infinie de B en fonction de N pour "+method)
         plt.savefig("norm_inf_"+method+".png")
