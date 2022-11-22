@@ -76,7 +76,7 @@ if __name__ == '__main__':
   
     test_stability = True
     if (test_stability):
-        N_list = np.arange(10,100,10)
+        N_list = np.arange(10,1000,10)
         T=2
         J = 100
         norm_inf=[]
