@@ -79,13 +79,13 @@ def solu_exact_2(sigma,r,t,T,x):
         
 def solu_exact(sigma,r,t,T,x):
     
-    d1 = (np.log(.0000001 + x) + (r + .5*sigma*sigma)*T)/(sigma*np.sqrt(T))
+    d1 = (np.log(.0000001 + x) + (r + .5*sigma*sigma)*(T-t+.000001))/(sigma*np.sqrt(T-t+.000001))
 
-    a1 = norm.cdf(-d1+sigma*np.sqrt(T))*np.exp(-r*T) #*np.exp(-r*T) enlevé
+    a1 = norm.cdf(-d1+sigma*np.sqrt(T-t+.000001))*np.exp(-r*(T-t+.000001)) #*np.exp(-r*T) enlevé
     a2 = - x*norm.cdf(-1.*d1)
-    a3 = x*sigma*sigma/(2*r)*np.exp(-r*T) #*np.exp(-r*T) enlevé
-    f1 = -np.power(.0000001 + x,-2*r/(sigma*sigma))*norm.cdf(d1-(2*r/sigma)*np.sqrt(T))
-    f2 = np.exp(r*T) *norm.cdf(d1)
+    a3 = x*sigma*sigma/(2*r)*np.exp(-r*(T-t+.000001)) #*np.exp(-r*T) enlevé
+    f1 = -np.power(.0000001 + x,-2*r/(sigma*sigma))*norm.cdf(d1-(2*r/sigma)*np.sqrt(T-t+.000001))
+    f2 = np.exp(r*(T-t+.000001)) *norm.cdf(d1)
 
     sol_ex = a1+a2+a3*(f1+f2)
     return sol_ex

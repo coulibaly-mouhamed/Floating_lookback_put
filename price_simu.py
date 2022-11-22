@@ -42,10 +42,15 @@ def compute_solution(sigma,r,N,J,M,T,method='EI'):
     
     #----Loop over time
     Uj = W_0
+    err = np.linalg.norm(Uj-solu_exact_vect(sigma,r,T,T,x))
+    max_err = err
     for j in range (1,J):
         Uj = B.dot(Uj)
+        err = np.linalg.norm(Uj-solu_exact_vect(sigma,r,T-t[j],T,x))
+        if (err>max_err):
+            max_err = err
         if (plot_option):
-            if (j + 1) % 100 == 0:
+            if (j + 1) % 200 == 0:
                 plt.plot(x, Uj, color='blue', linestyle='dashed', linewidth=1)
     
     if (plot_option):      
@@ -53,8 +58,8 @@ def compute_solution(sigma,r,N,J,M,T,method='EI'):
         valfin, = plt.plot(x, Uj,  color='red', linestyle='solid', linewidth=2)
         valex, = plt.plot(x, sol, color='green', linestyle='solid', linewidth=2)
         
-        plt.xlabel("Actif sous-jacent")
-        plt.ylabel("Valeur de l'option")
+        plt.xlabel("x")
+        plt.ylabel("Prix du contrat")
 
         plt.xlim((0.,1))
         
@@ -66,10 +71,9 @@ def compute_solution(sigma,r,N,J,M,T,method='EI'):
         nom_fichier = "opt_floating_" + method + ".png"
         plt.savefig(nom_fichier)
     
-    erreur = sol-Uj
-    erreur = np.linalg.norm(erreur)
     
-    return erreur
+    
+    return max_err
 
 
     
