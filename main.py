@@ -74,3 +74,33 @@ if __name__ == '__main__':
         print("Linear regression for k: \n",lr_k)
         #print("Polynomial regression for k:\n",np.polyfit(np.log(T/J_time_st),np.log(error_list_2),2,full=True))
   
+    test_stability = True
+    if (test_stability):
+        N_list = np.arange(10,100,10)
+        norm_inf=[]
+        for N_ in N_list:
+            h = 1/N_
+            x = np.linspace(0,1,N_)
+            A = get_A(sigma,h,r,x)
+            if (method == 'EE'):
+                B = (np.eye(N) - k*A)
+                #Calcul norme infinie de B
+                norm_inf_b = np.linalg.norm(B,np.inf)
+                norm_inf.append(norm_inf_b)
+            elif (method == 'EI'):
+                B = (np.linalg.inv(np.eye(N) + k*A))
+                #Calcul norme infinie de B
+                norm_inf_b = np.linalg.norm(B,np.inf)
+                norm_inf.append(norm_inf_b)
+            
+            elif (method == 'CN'):
+                B = (np.linalg.inv(np.eye(N) + k*A/2).dot(np.eye(N) - k*A/2))
+                #Calcul norme infinie de B
+                norm_inf_b = np.linalg.norm(B,np.inf)
+                norm_inf.append(norm_inf_b)
+        plt.figure()
+        plt.plot(N_list,norm_inf)
+        plt.xlabel("N")
+        plt.ylabel("Norme infinie de B")
+        plt.title("Norme infinie de B en fonction de N pour "+method)
+        plt.savefig("norm_inf_"+method+".png")
